@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -25,12 +27,37 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RedisTest {
 	@Autowired
 	private RedisConfig redisConfig;
+	/**
+	 * 使用的String序列化
+	 */
+	@Autowired
+	private StringRedisTemplate redisStringTemplate;
+
+	/**
+	 * 使用jdk默认的序列化
+	 */
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	@Test
-	public void testRedis(){
-		RedisConnection redisConnection=redisConfig.getRedis().getConnection();
-		redisConnection.set("hello".getBytes(),"word".getBytes());
-		redisConnection.del("hello".getBytes());
-		System.out.println("success");
-//		System.out.println(new String(redisConnection.get("hello".getBytes())));
+	public void testRedis() {
+		RedisConnection redisConnection = redisConfig.getRedis().getConnection();
+		redisConnection.set("hello".getBytes(), "word".getBytes());
+		System.out.println(new String(redisConnection.get("hello".getBytes())));
 	}
+
+	@Test
+	public void testStringRedisTemplate() {
+		redisStringTemplate.opsForValue().set("stringRedisTemplate", "ok");
+		System.out.println(redisStringTemplate.opsForValue().get("stringRedisTemplate"));
+	}
+
+
+	@Test
+	public void testRedisTemplate() {
+		redisTemplate.opsForValue().set("redisTemplate", "ok");
+		System.out.println(redisTemplate.opsForValue().get("redisTemplate"));
+	}
+
+
 }

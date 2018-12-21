@@ -1,0 +1,9 @@
+#简单配置
+spring:
+  redis:
+    #配置使用的数据库
+    database: 8
+    #配置host
+    host: localhost
+    #配置端口
+    port: 6379
